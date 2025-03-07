@@ -6,13 +6,12 @@ import string
 import nltk
 from nltk.corpus import stopwords
 
-
+# Download necessary NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('punkt_tab')  # In case Render requires it
 
-
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 # Load trained model and vectorizer
 model = pickle.load(open("model.pkl", "rb"))
@@ -40,7 +39,9 @@ def predict():
     result = "Spam" if prediction == 1 else "Ham"
     return jsonify({'prediction': result})
 
+# Run the Flask app
 import os
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # Ensure Flask uses port 10000
+    port = int(os.environ.get("PORT", 10000))  # Render requires PORT from environment
     app.run(host="0.0.0.0", port=port, debug=False)
+
